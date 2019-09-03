@@ -122,7 +122,10 @@ legend.onAdd = () => {
 
 legend.addTo(map);
 
-const harpGL = (new HarpGL({})).addTo(map);
+const harpGL = (new HarpGL({
+    decoderUrl: './build/decoder.bundle.js',
+    theme: "resources/berlin_tilezen_night_reduced.json"
+})).addTo(map);
 
 const geoJsonDataSource = new OmvDataSource({
     baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",

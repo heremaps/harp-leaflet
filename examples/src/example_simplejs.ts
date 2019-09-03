@@ -23,7 +23,10 @@ LE.marker([38.912753, -77.032194])
   .addTo(map)
   .openPopup();
 
-const harpGL = (new LE.HarpGL({})).addTo(map);
+const harpGL = (new LE.HarpGL({
+    decoderUrl: './build/decoder.bundle.js',
+    theme: "resources/berlin_tilezen_night_reduced.json"
+})).addTo(map);
 
 const geoJsonDataSource = new harp.OmvDataSource({
     baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",

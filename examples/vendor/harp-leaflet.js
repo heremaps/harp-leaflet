@@ -166,15 +166,12 @@
       };
   }
   class HarpGL extends leaflet.Layer {
-      constructor() {
-          super(...arguments);
+      constructor(m_options) {
+          super(m_options);
+          this.m_options = m_options;
           this.m_isMoving = false;
-          this.options = {};
       }
-      initialize(options) {
-          this.options = {
-              updateInterval: 0
-          };
+      initialize() {
           this.update();
           this.m_smoothZoom = createSmoothZoom(200); // 1/4 sec
       }
@@ -223,11 +220,14 @@
       }
       initGL() {
           const canvas = this.m_glCanvas = document.createElement('canvas');
+          // this styles are needed to sync movement and zoom deltas with leaflet.
+          Object.assign(canvas.style, {
+              width: "100%",
+              height: "100%"
+          });
           this.m_glContainer.appendChild(canvas);
-          canvas.style.width = '100%';
-          canvas.style.height = '100%';
-          this.m_mapView = new harpMapview.MapView(Object.assign({}, this.options, { canvas, alpha: false, pixelRatio: 1, decoderUrl: './build/decoder.bundle.js', theme: "resources/olp_tilezen_night_reduced.json" }));
-          // this.m_mapView.forceCameraAspect = window.innerWidth / window.innerHeight;
+          this.m_mapView = new harpMapview.MapView(Object.assign({ canvas, alpha: false, pixelRatio: 1 }, this.m_options));
+          this.m_glContainer.appendChild(this.m_mapView.canvas);
       }
       update() {
           if (this._map) {

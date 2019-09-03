@@ -9,9 +9,7 @@ import bezier from 'bezier-easing';
 import {DomUtil, LatLng, Layer, LayerOptions} from 'leaflet';
 import './draggable-patch';
 
-interface HarpLeafletOptions extends LayerOptions, MapViewOptions {
-    [key: string]: any;
-}
+type HarpLeafletOptions = Omit<LayerOptions & MapViewOptions, "canvas">;
 
 const GEO_COORD = new GeoCoordinates(0, 0, 0);
 
@@ -68,13 +66,11 @@ export default class HarpGL extends Layer {
     private m_smoothZoom!: ISmoothZoom;
     private m_isMoving: boolean = false;
 
-    private options: any = {};
+    constructor(private m_options: HarpLeafletOptions) {
+        super(m_options as any as LayerOptions);
+    }
 
-    initialize(options: HarpLeafletOptions) {
-        this.options = {
-            updateInterval: 0
-        };
-
+    initialize() {
         this.update();
 
         this.m_smoothZoom = createSmoothZoom(200); // 1/4 sec
@@ -90,7 +86,7 @@ export default class HarpGL extends Layer {
                 this.m_isMoving = true;
                 this.update();
             }, // sensibly throttle updating while panning
-            zoomanim: this.setNewZoom, // applys the zoom animation to the <canvas>
+            zoomanim: this.setNewZoom, // applies the zoom animation to the <canvas>
             zoom: this.update, // animate every zoom event for smoother pinch-zooming
         };
     }
@@ -139,19 +135,20 @@ export default class HarpGL extends Layer {
 
     private initGL() {
         const canvas = this.m_glCanvas = document.createElement('canvas');
-        this.m_glContainer.appendChild(canvas);
+        // this styles are needed to sync movement and zoom deltas with leaflet.
+        Object.assign(canvas.style, {
+            width: "100%",
+            height: "100%"
+        });
 
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
+        this.m_glContainer.appendChild(canvas);
 
         this.m_mapView = new MapView({
             canvas,
-            alpha: false,
-            pixelRatio: 1,
-            decoderUrl: './build/decoder.bundle.js',
-            theme: "resources/berlin_tilezen_night_reduced.json",
-            ...this.options
+            ...this.m_options
         });
+
+        this.m_glContainer.appendChild(this.m_mapView.canvas);
     }
 
     private update() {
