@@ -31,12 +31,16 @@
     "yarn": ">=1.11.1"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.5.1",
+    "@here/harp-geoutils": "^0.11.0",
+    "@here/harp-mapview": "^0.11.0",
     "@here/harp-geojson-datasource": "^0.11.0",
     "@here/harp-omv-datasource": "^0.11.0",
     "@here/harp.gl": "^0.11.0",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^5.0.4",
     "glob": "^7.1.4",
+    "leaflet": "^1.5.1",
     "prettier": "^1.18.2",
     "rollup": "^1.19.4",
     "rollup-plugin-auto-named-exports": "^1.0.0-beta.3",
@@ -49,18 +53,19 @@
     "typescript": "^3.5.3",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^3.8.0",
+    "three": "0.110.0"
   },
   "resolutions": {
     "bl": "0.9.5",
     "semver": "4.3.2"
   },
   "dependencies": {
-    "@here/harp-geoutils": "^0.11.0",
-    "@here/harp-mapview": "^0.11.0",
-    "@types/leaflet": "^1.5.1",
-    "bezier-easing": "^2.1.0",
+    "bezier-easing": "^2.1.0"
+  },
+  "peerDependencies": {
     "leaflet": "^1.5.1",
-    "three": "0.110.0"
+    "@here/harp-geoutils": "^0.11.0",
+    "@here/harp-mapview": "^0.11.0"
   }
 }
