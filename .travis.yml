@@ -1,13 +1,9 @@
 language: node_js
 dist: xenial
 node_js:
-  - "10"
+  - "12"
 cache:
   yarn: true
-
-addons:
-  chrome: stable
-  firefox: latest
 
 branches:
   only:
@@ -21,10 +17,6 @@ before_install:
 
 jobs:
   include:
-    - name: "Test"
-      script: | 
-        set -ex
-        yarn run test
     - name: "Build & Deploy"
       script: |
         set -ex
