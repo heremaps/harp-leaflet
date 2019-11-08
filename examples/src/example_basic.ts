@@ -23,7 +23,7 @@ const harpGL = new HarpGL({
     theme: "resources/berlin_tilezen_night_reduced.json"
 }).addTo(map);
 
-const geoJsonDataSource = new OmvDataSource({
+const dataSource = new OmvDataSource({
     baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",
     apiFormat: APIFormat.XYZMVT,
     styleSetName: config.styleSetName,
@@ -32,7 +32,6 @@ const geoJsonDataSource = new OmvDataSource({
     concurrentDecoderScriptUrl: config.decoderPath
 });
 
-harpGL.mapView.addDataSource(geoJsonDataSource as any);
+harpGL.mapView.addDataSource(dataSource as any);
 
-harpGL.mapView.camera.position.set(2000000, 3500000, 6000000); // Europe.
-harpGL.mapView.geoCenter = new GeoCoordinates(16, -4, 0);
+harpGL.mapView.lookAt(new GeoCoordinates(16, -4, 0), 6000000);

@@ -60,8 +60,7 @@ const geoJsonDataSource = new OmvDataSource({
 harpGL.mapView.addDataSource(geoJsonDataSource);
 
 // 5. Point your view to the right place
-harpGL.mapView.camera.position.set(2000000, 3500000, 6000000); // Europe.
-harpGL.mapView.geoCenter = new GeoCoordinates(16, -4, 0);
+harpGL.mapView.lookAt(new GeoCoordinates(16, -4, 0), 6000000);
 ```
 
 ## License
