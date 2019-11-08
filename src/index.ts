@@ -3,11 +3,11 @@
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
-import {GeoCoordinates} from '@here/harp-geoutils';
-import {MapView, MapViewEventNames, MapViewOptions, MapViewUtils} from '@here/harp-mapview';
-import bezier from 'bezier-easing';
-import {DomUtil, LatLng, Layer, LayerOptions} from 'leaflet';
-import './draggable-patch';
+import { GeoCoordinates, GeoCoordinatesLike } from "@here/harp-geoutils";
+import { MapView, MapViewEventNames, MapViewOptions, MapViewUtils } from "@here/harp-mapview";
+import bezier from "bezier-easing";
+import { DomUtil, LatLng, Layer, LayerOptions } from "leaflet";
+import "./draggable-patch";
 
 type HarpLeafletOptions = Omit<LayerOptions & MapViewOptions, "canvas">;
 
@@ -17,7 +17,7 @@ const easing = bezier(0, 0, 0.25, 1);
 
 // Smooth zoom block
 interface ISmoothZoom {
-    compute: (zoom: number, center: LatLng) => {zoom: number, center: LatLng};
+    compute: (zoom: number, center: LatLng) => { zoom: number; center: LatLng };
     setZoomAndTimestamp: (zoom: number, center: LatLng, timestamp: number) => void;
 }
 
@@ -46,10 +46,10 @@ function createSmoothZoom(delay: number): ISmoothZoom {
                 const lat = lerp(lastCenter!.lat, center.lat, progress);
                 const lng = lerp(lastCenter!.lng, center.lng, progress);
 
-                return {zoom: currentZoom, center: ({lat, lng} as any as LatLng)};
+                return { zoom: currentZoom, center: ({ lat, lng } as any) as LatLng };
             }
 
-            return {zoom, center};
+            return { zoom, center };
         },
         setZoomAndTimestamp: (zoom: number, center: LatLng, timestamp: number) => {
             lastZoom = zoom;
@@ -67,7 +67,7 @@ export default class HarpGL extends Layer {
     private m_isMoving: boolean = false;
 
     constructor(private m_options: HarpLeafletOptions) {
-        super(m_options as any as LayerOptions);
+        super((m_options as any) as LayerOptions);
     }
 
     initialize() {
@@ -79,24 +79,24 @@ export default class HarpGL extends Layer {
     getEvents() {
         return {
             // movestart: () => this.m_isMoving = true,
-            moveend: () => this.m_isMoving = false,
-            zoomstart: () => this.m_isMoving = false,
-            zoomend: () => this.m_isMoving = false,
+            moveend: () => (this.m_isMoving = false),
+            zoomstart: () => (this.m_isMoving = false),
+            zoomend: () => (this.m_isMoving = false),
             move: () => {
                 this.m_isMoving = true;
                 this.update();
             }, // sensibly throttle updating while panning
             zoomanim: this.setNewZoom, // applies the zoom animation to the <canvas>
-            zoom: this.update, // animate every zoom event for smoother pinch-zooming
+            zoom: this.update // animate every zoom event for smoother pinch-zooming
         };
     }
 
     resize() {
-      const size = this._map.getSize();
+        const size = this._map.getSize();
 
-      this.m_glContainer.style.width = size.x + 'px';
-      this.m_glContainer.style.height = size.y + 'px';
-      this.m_mapView.resize(size.x, size.y);
+        this.m_glContainer.style.width = size.x + "px";
+        this.m_glContainer.style.height = size.y + "px";
+        this.m_mapView.resize(size.x, size.y);
     }
 
     onAdd() {
@@ -104,7 +104,7 @@ export default class HarpGL extends Layer {
             this.initContainer();
         }
 
-        this.getPane('mapPane')!.parentNode!.appendChild(this.m_glContainer);
+        this.getPane("mapPane")!.parentNode!.appendChild(this.m_glContainer);
 
         this.initGL();
 
@@ -120,21 +120,21 @@ export default class HarpGL extends Layer {
             this.update();
         });
 
-        this._map.on('resize', this.resize.bind(this));
+        this._map.on("resize", this.resize.bind(this));
 
         return this;
     }
 
     private initContainer() {
-        const container = this.m_glContainer = DomUtil.create('div', 'leaflet-harpgl-layer');
+        const container = (this.m_glContainer = DomUtil.create("div", "leaflet-harpgl-layer"));
 
         const size = this._map.getSize();
-        container.style.width  = size.x + 'px';
-        container.style.height = size.y + 'px';
+        container.style.width = size.x + "px";
+        container.style.height = size.y + "px";
     }
 
     private initGL() {
-        const canvas = this.m_glCanvas = document.createElement('canvas');
+        const canvas = (this.m_glCanvas = document.createElement("canvas"));
         // this styles are needed to sync movement and zoom deltas with leaflet.
         Object.assign(canvas.style, {
             width: "100%",
@@ -153,22 +153,24 @@ export default class HarpGL extends Layer {
 
     private update() {
         if (this._map) {
-          const {zoom, center} = this.m_smoothZoom.compute(
-              this._map.getZoom(),
-              this._map.getCenter()
-          );
+            const { zoom, center } = this.m_smoothZoom.compute(
+                this._map.getZoom(),
+                this._map.getCenter()
+            );
 
-          const cameraDistance = MapViewUtils.calculateDistanceToGroundFromZoomLevel(
-              this.m_mapView,
-              zoom
-          );
+            const cameraDistance = MapViewUtils.calculateDistanceToGroundFromZoomLevel(
+                this.m_mapView,
+                zoom
+            );
 
-          GEO_COORD.latitude = center.lat;
-          GEO_COORD.longitude = center.lng;
-          GEO_COORD.altitude = cameraDistance;
+            GEO_COORD.latitude = center.lat;
+            GEO_COORD.longitude = center.lng;
+            GEO_COORD.altitude = cameraDistance;
 
-          // Triggers update of mapview.worldCenter
-          this.m_mapView.geoCenter = GEO_COORD;
+            if (!geoCoordsSame(this.m_mapView.geoCenter, GEO_COORD)) {
+                // Triggers update of mapview.worldCenter
+                this.m_mapView.geoCenter = GEO_COORD;
+            }
         }
     }
 
@@ -177,6 +179,21 @@ export default class HarpGL extends Layer {
     }
 
     get mapView() {
-      return this.m_mapView;
+        return this.m_mapView;
     }
+}
+
+function geoCoordsSame(a: GeoCoordinatesLike, b: GeoCoordinatesLike): boolean {
+    return (
+        equalsWithEpsilon(a.latitude, b.latitude) &&
+        equalsWithEpsilon(a.longitude, b.longitude) &&
+        ((typeof a.altitude === "number" &&
+            typeof b.altitude === "number" &&
+            equalsWithEpsilon(a.altitude, b.altitude)) ||
+            typeof a.altitude === typeof b.altitude)
+    );
+}
+
+function equalsWithEpsilon(a: number, b: number) {
+    return Math.abs(a - b) < 0.000000001;
 }

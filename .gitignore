@@ -1,3 +1,5 @@
+build/
+examples/vendor/
 **/node_modules/
 examples/build/
 yarn-error.log
@@ -5,3 +7,4 @@ yarn-error.log
 .DS_Store
 .editorconfig
 package-lock.json
+here-harp-leaflet*.tgz
