@@ -3,30 +3,29 @@
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as config from './config';
+import * as config from "./config";
 
 interface ILeafletExtended {
-  HarpGL: any;
+    HarpGL: any;
 }
 
 // @ts-ignore
 const LE: typeof L & ILeafletExtended = L as any;
-declare let harp: typeof import('@here/harp-omv-datasource')
-  & typeof import('@here/harp-geoutils');
+declare let harp: typeof import("@here/harp-omv-datasource") & typeof import("@here/harp-geoutils");
 
-const map = LE.map('map', {
-  // wheelDebounceTime: 10
+const map = LE.map("map", {
+    // wheelDebounceTime: 10
 }).setView([38.912753, -77.032194], 15);
 
 LE.marker([38.912753, -77.032194])
-  .bindPopup("Hello <b>Harp GL</b>!<br>Whoa, it works!")
-  .addTo(map)
-  .openPopup();
+    .bindPopup("Hello <b>Harp GL</b>!<br>Whoa, it works!")
+    .addTo(map)
+    .openPopup();
 
-const harpGL = (new LE.HarpGL({
-    decoderUrl: './build/decoder.bundle.js',
+const harpGL = new LE.HarpGL({
+    decoderUrl: "./build/decoder.bundle.js",
     theme: "resources/berlin_tilezen_night_reduced.json"
-})).addTo(map);
+}).addTo(map);
 
 const geoJsonDataSource = new harp.OmvDataSource({
     baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",

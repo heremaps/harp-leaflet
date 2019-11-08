@@ -10,14 +10,14 @@
  * [1. Render frame (synchronous, takes time)] - [2. Update position (immediately)]
  */
 
-import {Draggable} from 'leaflet';
+import { Draggable } from "leaflet";
 
 // @ts-ignore
 const oldUpdatePostition = Draggable.prototype._updatePosition;
 
 // @ts-ignore
 Draggable.prototype._updatePosition = function(...args) {
-  setTimeout(() => {
-    oldUpdatePostition.apply(this, args);
-  }, 0);
+    setTimeout(() => {
+        oldUpdatePostition.apply(this, args);
+    }, 0);
 };
