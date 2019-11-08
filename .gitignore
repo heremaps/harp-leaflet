@@ -1,3 +1,5 @@
+build/
+examples/vendor/
 **/node_modules/
 examples/build/
 yarn-error.log
