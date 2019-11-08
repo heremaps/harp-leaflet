@@ -3,7 +3,7 @@
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
-import { GeoCoordinates } from "@here/harp-geoutils";
+import { GeoCoordinates, GeoCoordinatesLike } from "@here/harp-geoutils";
 import { MapView, MapViewEventNames, MapViewOptions, MapViewUtils } from "@here/harp-mapview";
 import bezier from "bezier-easing";
 import { DomUtil, LatLng, Layer, LayerOptions } from "leaflet";
@@ -167,8 +167,10 @@ export default class HarpGL extends Layer {
             GEO_COORD.longitude = center.lng;
             GEO_COORD.altitude = cameraDistance;
 
-            // Triggers update of mapview.worldCenter
-            this.m_mapView.geoCenter = GEO_COORD;
+            if (!geoCoordsSame(this.m_mapView.geoCenter, GEO_COORD)) {
+                // Triggers update of mapview.worldCenter
+                this.m_mapView.geoCenter = GEO_COORD;
+            }
         }
     }
 
@@ -179,4 +181,19 @@ export default class HarpGL extends Layer {
     get mapView() {
         return this.m_mapView;
     }
+}
+
+function geoCoordsSame(a: GeoCoordinatesLike, b: GeoCoordinatesLike): boolean {
+    return (
+        equalsWithEpsilon(a.latitude, b.latitude) &&
+        equalsWithEpsilon(a.longitude, b.longitude) &&
+        ((typeof a.altitude === "number" &&
+            typeof b.altitude === "number" &&
+            equalsWithEpsilon(a.altitude, b.altitude)) ||
+            typeof a.altitude === typeof b.altitude)
+    );
+}
+
+function equalsWithEpsilon(a: number, b: number) {
+    return Math.abs(a - b) < 0.000000001;
 }
