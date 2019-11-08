@@ -3,13 +3,13 @@
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
-import {GeoCoordinates} from '@here/harp-geoutils';
-import {APIFormat, OmvDataSource} from '@here/harp-omv-datasource';
-import HarpGL from 'harp-leaflet';
-import * as L from 'leaflet';
-import * as config from './config';
+import { GeoCoordinates } from "@here/harp-geoutils";
+import { APIFormat, OmvDataSource } from "@here/harp-omv-datasource";
+import HarpGL from "harp-leaflet";
+import * as L from "leaflet";
+import * as config from "./config";
 
-const map = L.map('map', {
+const map = L.map("map", {
     // wheelDebounceTime: 10
 }).setView([38.912753, -77.032194], 15);
 
@@ -18,10 +18,10 @@ L.marker([38.912753, -77.032194])
     .addTo(map)
     .openPopup();
 
-const harpGL = (new HarpGL({
-    decoderUrl: './build/decoder.bundle.js',
+const harpGL = new HarpGL({
+    decoderUrl: "./build/decoder.bundle.js",
     theme: "resources/berlin_tilezen_night_reduced.json"
-})).addTo(map);
+}).addTo(map);
 
 const geoJsonDataSource = new OmvDataSource({
     baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",
