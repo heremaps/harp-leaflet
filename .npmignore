@@ -1,4 +1,16 @@
 **/node_modules/
 examples/
+src/
+build/examples/
+scripts/
+here-harp-leaflet*.tgz
+webpack.config.js
+rollup.config.js
+.travis.yml
+.ort.yml
+tslint.json
+tsconfig.json
+.prettierrc.json
+.prettierignore
 yarn-error.log
 .rpt2_cache/
