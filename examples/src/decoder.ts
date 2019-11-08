@@ -8,11 +8,12 @@ declare let self: Worker & {
     importScripts(..._scripts: string[]): void;
 };
 
-self.importScripts("https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.js");
+self.importScripts("https://unpkg.com/three@0.110.0/build/three.min.js");
 
-import { OmvTileDecoderService, OmvTilerService } from "@here/harp-omv-datasource/index-worker";
 import { GeoJsonTileDecoderService } from "@here/harp-geojson-datasource/index-worker";
+import { OmvTileDecoderService, OmvTilerService } from "@here/harp-omv-datasource/index-worker";
 
 OmvTileDecoderService.start();
 OmvTilerService.start(); // TODO: See if this can be separated to get 2 scripts of smaller sizes.
-GeoJsonTileDecoderService.start(); // TODO: after adding the features datasource, test if this can be removed, normally yes.
+// TODO: after adding the features datasource, test if this can be removed, normally yes.
+GeoJsonTileDecoderService.start();

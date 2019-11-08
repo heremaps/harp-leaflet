@@ -31,8 +31,8 @@
     "yarn": ">=1.11.1"
   },
   "devDependencies": {
-    "@here/harp-geojson-datasource": "^0.10.0",
-    "@here/harp-omv-datasource": "^0.10.0",
+    "@here/harp-geojson-datasource": "^0.11.0",
+    "@here/harp-omv-datasource": "^0.11.0",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^5.0.4",
     "glob": "^7.1.4",
@@ -55,11 +55,11 @@
     "semver": "4.3.2"
   },
   "dependencies": {
-    "@here/harp-geoutils": "^0.10.0",
-    "@here/harp-mapview": "^0.10.0",
+    "@here/harp-geoutils": "^0.11.0",
+    "@here/harp-mapview": "^0.11.0",
     "@types/leaflet": "^1.5.1",
     "bezier-easing": "^2.1.0",
     "leaflet": "^1.5.1",
-    "three": "0.107.0"
+    "three": "0.110.0"
   }
 }
