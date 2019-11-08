@@ -33,6 +33,7 @@
   "devDependencies": {
     "@here/harp-geojson-datasource": "^0.11.0",
     "@here/harp-omv-datasource": "^0.11.0",
+    "@here/harp.gl": "^0.11.0",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^5.0.4",
     "glob": "^7.1.4",

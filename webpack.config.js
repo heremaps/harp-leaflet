@@ -42,6 +42,14 @@ module.exports = {
                 to: path.resolve(__dirname, "./examples/vendor/harp-leaflet.js"),
                 toType: "file",
                 force: true
+            },
+            {
+                from: require.resolve("@here/harp.gl/dist/harp.min.js"),
+                to: path.resolve(__dirname, "./examples/vendor")
+            },
+            {
+                from: require.resolve("@here/harp.gl/dist/harp-decoders.min.js"),
+                to: path.resolve(__dirname, "./examples/vendor/")
             }
         ])
     ],

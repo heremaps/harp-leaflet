@@ -23,7 +23,6 @@ LE.marker([38.912753, -77.032194])
     .openPopup();
 
 const harpGL = new LE.HarpGL({
-    decoderUrl: "./build/decoder.bundle.js",
     theme: "resources/berlin_tilezen_night_reduced.json"
 }).addTo(map);
 

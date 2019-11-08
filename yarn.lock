@@ -153,6 +153,13 @@
   resolved "https://registry.yarnpkg.com/@here/harp-utils/-/harp-utils-0.11.0.tgz#30bf61f860c36d22ecb413bca4e85c1e2e3b13f5"
   integrity sha512-k8eRzzbDqnkAiFAcmi2G4McTW/cGW+mqmAFmc5yC4ozvaZ2f+E+536Og5H/COewdPLvJFrLpsAKQzodfHhIYBg==
 
+"@here/harp.gl@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@here/harp.gl/-/harp.gl-0.11.0.tgz#c6d168e3deb9d1b69b6107cc8ad43f2ffb079d0f"
+  integrity sha512-5+qYRitNh0dH739Eo6sZILN3jseHja/5PEV/8SmtlBZipImkR0qcyylXXejWDIaEhCRxd8GYkr3UsXdNgcB4Rw==
+  dependencies:
+    three "^0.110.0"
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -4331,7 +4338,7 @@ terser@^4.1.2:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-three@0.110.0:
+three@0.110.0, three@^0.110.0:
   version "0.110.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.110.0.tgz#8719591de1336269113ee79f4268ba247b2324f8"
   integrity sha512-wlurH8XBO9Sd5VIw8nBa+taLR20kqaI4e9FiuMh6tqK8eOS2q2R+ZoUyufbyDTVTHhs8GiTbv0r2CMLkwerFJg==
