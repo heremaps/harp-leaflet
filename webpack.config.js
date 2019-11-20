@@ -12,6 +12,8 @@ const entries = glob.sync("./examples/src/*.ts").reduce(
     {}
 );
 
+const harpMapThemePath = path.dirname(require.resolve("@here/harp-map-theme/package.json"));
+
 module.exports = {
     context: dir,
     mode: "development",
@@ -28,8 +30,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".webpack.js", ".web.ts", ".web.js", ".js"],
         alias: {
             "harp-leaflet$": path.resolve(__dirname, "./src/index.ts"),
-            "harp-leaflet": path.resolve(__dirname, "./src/"),
-            "../../harp-mapview": path.dirname(require.resolve("@here/harp-mapview/package.json"))
+            "harp-leaflet": path.resolve(__dirname, "./src/")
         }
     },
     module: {
@@ -50,6 +51,11 @@ module.exports = {
             {
                 from: require.resolve("@here/harp.gl/dist/harp-decoders.min.js"),
                 to: path.resolve(__dirname, "./examples/vendor/")
+            },
+            {
+                from: path.join(harpMapThemePath, "resources/"),
+                to: path.resolve(__dirname, "./examples/resources/harp-map-theme"),
+                toType: "dir"
             }
         ])
     ],
@@ -57,5 +63,13 @@ module.exports = {
         contentBase: path.resolve(__dirname, "examples"),
         publicPath: "/build/",
         open: true
+    },
+    stats: {
+        all: false,
+        timings: true,
+        exclude: "/resources/",
+        errors: true,
+        entrypoints: true,
+        warnings: true
     }
 };

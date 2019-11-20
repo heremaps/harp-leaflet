@@ -77,6 +77,11 @@
   dependencies:
     "@here/harp-utils" "^0.11.0"
 
+"@here/harp-map-theme@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@here/harp-map-theme/-/harp-map-theme-0.11.0.tgz#ab1f3da0e757a64d1ef19d028f7de3407f82e33a"
+  integrity sha512-TggsylJI9pqzEtDKQt+EHd+tWKuI9ieo0nBf8sbyifXvAWKflVG6Q7lPOC0DkMTXo3/JJ/S1HWG3jydBgC9EAA==
+
 "@here/harp-mapview-decoder@^0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@here/harp-mapview-decoder/-/harp-mapview-decoder-0.11.0.tgz#c59b5af2cb298821e2cb829aff3524d998df5720"
