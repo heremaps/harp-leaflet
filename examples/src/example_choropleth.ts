@@ -137,7 +137,7 @@ legend.addTo(map);
 
 const harpGL = new HarpGL({
     decoderUrl: "./build/decoder.bundle.js",
-    theme: "resources/berlin_tilezen_night_reduced.json"
+    theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json"
 }).addTo(map);
 
 const dataSource = new OmvDataSource({

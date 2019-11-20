@@ -8,3 +8,4 @@ yarn-error.log
 .editorconfig
 package-lock.json
 here-harp-leaflet*.tgz
+examples/resources/harp-map-theme/
