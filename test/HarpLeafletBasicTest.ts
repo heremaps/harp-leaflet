@@ -14,6 +14,8 @@ import * as L from "leaflet";
 import * as sinon from "sinon";
 import HarpGL from "../src/index";
 
+const GEO_EPSILON = 0.00000001;
+
 describe("harp-leaflet", function() {
     let sandbox: sinon.SinonSandbox;
     let leafletMap: L.Map;
@@ -65,9 +67,36 @@ describe("harp-leaflet", function() {
         const harpCenter = harpGLLayer.mapView.geoCenter;
         const harpZoom = harpGLLayer.mapView.zoomLevel;
 
-        const geoEpsilon = 0.00000001;
-        assert.closeTo(harpCenter.latitude, lCenter.lat, geoEpsilon);
-        assert.closeTo(harpCenter.longitude, lCenter.lng, geoEpsilon);
+        assert.closeTo(harpCenter.latitude, lCenter.lat, GEO_EPSILON);
+        assert.closeTo(harpCenter.longitude, lCenter.lng, GEO_EPSILON);
         assert.equal(harpZoom, lZoom);
+    });
+
+    it("L.map.setView updates MapView camera correctly", async function() {
+        leafletMap.setView([40.707, -74.01], 12);
+
+        // `mapView.zoomLevel` is updated only when actual rendering occurs.
+        await waitForEvent(harpGLLayer.mapView, MapViewEventNames.AfterRender);
+
+        const harpCenter = harpGLLayer.mapView.geoCenter;
+        const harpZoom = harpGLLayer.mapView.zoomLevel;
+
+        assert.closeTo(harpCenter.latitude, 40.707, GEO_EPSILON);
+        assert.closeTo(harpCenter.longitude, -74.01, GEO_EPSILON);
+        assert.equal(harpZoom, 12);
+    });
+
+    it("L.map.fitBounds updates MapView camera correctly", async function() {
+        leafletMap.fitBounds(L.latLngBounds([51.412912, -5.998535], [43.052834, 8.4375]));
+
+        // `mapView.zoomLevel` is updated only when actual rendering occurs.
+        await waitForEvent(harpGLLayer.mapView, MapViewEventNames.AfterRender);
+
+        const harpCenter = harpGLLayer.mapView.geoCenter;
+        const harpZoom = harpGLLayer.mapView.zoomLevel;
+
+        assert.closeTo(harpCenter.latitude, 47.39834916, GEO_EPSILON);
+        assert.closeTo(harpCenter.longitude, 1.21948249, GEO_EPSILON);
+        assert.equal(harpZoom, 4);
     });
 });
