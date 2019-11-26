@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>harp-leaflet / browser integration tests</title>
+        <link href="mocha.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div id="mocha"></div>
+        <script src="three.min.js"></script>
+        <script src="mocha.js"></script>
+        <script>
+            mocha.setup({
+                ui: "bdd",
+                globals: ["_leaflet_events"]
+            });
+        </script>
+        <script src="tests.bundle.js"></script>
+        <script>
+            mocha.checkLeaks();
+            mocha.run();
+        </script>
+    </body>
+</html>
