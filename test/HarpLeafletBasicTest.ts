@@ -35,13 +35,12 @@ describe("harp-leaflet", function() {
     });
 
     after(function() {
-        //    This doesn't work as for now
-        //if (harpGLLayer !== undefined) {
-        //    harpGLLayer.remove();
-        //}
-        //if (leafletMap !== undefined) {
-        //    leafletMap.remove();
-        //}
+        if (harpGLLayer !== undefined) {
+            harpGLLayer.remove();
+        }
+        if (leafletMap !== undefined) {
+            leafletMap.remove();
+        }
         if (domElement !== undefined) {
             domElement.remove();
         }
@@ -98,5 +97,13 @@ describe("harp-leaflet", function() {
         assert.closeTo(harpCenter.latitude, 47.39834916, GEO_EPSILON);
         assert.closeTo(harpCenter.longitude, 1.21948249, GEO_EPSILON);
         assert.equal(harpZoom, 4);
+    });
+
+    it("remove works", async function() {
+        const onRemoveStub = sandbox.spy(HarpGL.prototype, "onRemove");
+
+        harpGLLayer.remove();
+        harpGLLayer = undefined!;
+        assert.equal(onRemoveStub.callCount, 1, "onRemove should be called");
     });
 });

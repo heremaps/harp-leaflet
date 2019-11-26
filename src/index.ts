@@ -6,7 +6,7 @@
 import { GeoCoordinates, GeoCoordinatesLike } from "@here/harp-geoutils";
 import { MapView, MapViewEventNames, MapViewOptions, MapViewUtils } from "@here/harp-mapview";
 import bezier from "bezier-easing";
-import { DomUtil, LatLng, Layer, LayerOptions } from "leaflet";
+import { DomUtil, LatLng, Layer, LayerOptions, Map } from "leaflet";
 import "./draggable-patch";
 
 type HarpLeafletOptions = Omit<LayerOptions & MapViewOptions, "canvas">;
@@ -109,35 +109,56 @@ export default class HarpGL extends Layer {
         };
     }
 
-    resize() {
-        const size = this._map.getSize();
-
-        this.m_glContainer.style.width = size.x + "px";
-        this.m_glContainer.style.height = size.y + "px";
-        this.m_mapView.resize(size.x, size.y);
-    }
-
-    onAdd() {
+    onAdd(map: Map) {
+        if (super.onAdd) {
+            super.onAdd(map);
+        }
         if (!this.m_glContainer) {
             this.initContainer();
         }
 
         this.getPane("mapPane")!.parentNode!.appendChild(this.m_glContainer);
 
-        this.initGL();
+        if (this.m_mapView === undefined) {
+            this.initMapView();
+        }
 
         // ...
 
-        this.resize();
+        this.onResize();
+        this._map.on("resize", this.onResize);
 
         this.update();
+        return this;
+    }
 
-        this._map.on("resize", this.resize.bind(this));
+    onRemove(map: Map): this {
+        if (super.onRemove) {
+            super.onRemove(map);
+        }
+        map.off("resize", this.onResize);
+        if (this.m_mapView !== undefined) {
+            this.m_mapView.removeEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
+            this.m_mapView.dispose();
+            this.m_mapView = undefined!;
+        }
+        if (this.m_glContainer !== undefined) {
+            this.m_glContainer.remove();
+            this.m_glContainer = undefined!;
+        }
 
         return this;
     }
 
-    onAfterRender = () => {
+    private onResize = () => {
+        const size = this._map.getSize();
+
+        this.m_glContainer.style.width = size.x + "px";
+        this.m_glContainer.style.height = size.y + "px";
+        this.m_mapView.resize(size.x, size.y);
+    };
+
+    private onAfterRender = () => {
         if (!this.m_isZooming) {
             return;
         }
@@ -153,7 +174,7 @@ export default class HarpGL extends Layer {
         container.style.height = size.y + "px";
     }
 
-    private initGL() {
+    private initMapView() {
         const canvas = document.createElement("canvas");
         // this styles are needed to sync movement and zoom deltas with leaflet.
         Object.assign(canvas.style, {
@@ -168,7 +189,7 @@ export default class HarpGL extends Layer {
             ...this.m_options
         });
 
-        this.m_glContainer.appendChild(this.m_mapView.canvas);
+        this.m_mapView.addEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
     }
 
     private update() {
