@@ -47,12 +47,6 @@ module.exports = {
             require.resolve("three/build/three.min.js"),
             require.resolve("mocha/mocha.js"),
             require.resolve("mocha/mocha.css")
-            //require.resolve("mocha-webdriver-runner/dist/mocha-webdriver-client.js"),
-            // {
-            //     from: path.join(harpMapThemePath, "resources/"),
-            //     to: path.resolve(__dirname, "./examples/resources/harp-map-theme"),
-            //     toType: "dir"
-            // }
         ])
     ],
     devServer: {

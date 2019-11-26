@@ -5,6 +5,9 @@ node_js:
 cache:
   yarn: true
 
+addons:
+  chrome: stable
+
 branches:
   only:
     - master
@@ -22,6 +25,8 @@ jobs:
         set -ex
         yarn run build
         yarn run build-examples
+        yarn run build-tests
+        yarn run test
       deploy:
         - provider: script
           script: ./scripts/publish-packages.sh
