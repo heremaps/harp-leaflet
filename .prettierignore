@@ -1,3 +1,4 @@
 build/
+test/dist/
 examples/vendor/
 node_modules/
