@@ -151,4 +151,3 @@ const dataSource = new OmvDataSource({
 
 harpGL.mapView.addDataSource(dataSource);
 
-harpGL.mapView.lookAt(new GeoCoordinates(16, -4, 0), 6000000);

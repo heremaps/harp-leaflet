@@ -36,5 +36,3 @@ const dataSource = new harp.OmvDataSource({
 });
 
 harpGL.mapView.addDataSource(dataSource);
-
-harpGL.mapView.lookAt(new harp.GeoCoordinates(16, -4), 6000000);
