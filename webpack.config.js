@@ -19,8 +19,8 @@ module.exports = {
     mode: "development",
     entry: entries,
     output: {
-        filename: "[name].bundle.js",
-        path: path.resolve(__dirname, "./examples/build/")
+        filename: "build/[name].bundle.js",
+        path: path.resolve(__dirname, "./examples")
     },
     externals: {
         three: "THREE",
@@ -40,28 +40,27 @@ module.exports = {
         new CopyWebpackPlugin([
             {
                 from: path.resolve(__dirname, "./build/harp-leaflet.js"),
-                to: path.resolve(__dirname, "./examples/vendor/harp-leaflet.js"),
+                to: "vendor/harp-leaflet.js",
                 toType: "file",
                 force: true
             },
             {
                 from: require.resolve("@here/harp.gl/dist/harp.min.js"),
-                to: path.resolve(__dirname, "./examples/vendor")
+                to: "vendor/"
             },
             {
                 from: require.resolve("@here/harp.gl/dist/harp-decoders.min.js"),
-                to: path.resolve(__dirname, "./examples/vendor/")
+                to: "vendor/"
             },
             {
                 from: path.join(harpMapThemePath, "resources/"),
-                to: path.resolve(__dirname, "./examples/resources/harp-map-theme"),
+                to: "resources/harp-map-theme",
                 toType: "dir"
             }
         ])
     ],
     devServer: {
         contentBase: path.resolve(__dirname, "examples"),
-        publicPath: "/build/",
         open: true
     },
     stats: {
