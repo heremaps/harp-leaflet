@@ -66,22 +66,22 @@
   integrity sha512-GYzzBKRFkXjFNpg6+kkj6jLSTlKW0IrmIIWeZY7w/cBaYmYK3KxmL6E3cNJybuhpZm51EJloTOPgXD3pVTtQWg==
 
 "@here/harp-mapview-decoder@^0.11.1":
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/@here/harp-mapview-decoder/-/harp-mapview-decoder-0.11.1.tgz#ce2440f0c10735cf9dec1dd87462b2ff46408a34"
-  integrity sha512-BAqU1UaBGAlMv8zbCLO9Vl/e1NOi4PII3ReWbRzYgcDtYux9HDm0sxR612vu4gHfacJRqfti5uD/2CEe/hr4fg==
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/@here/harp-mapview-decoder/-/harp-mapview-decoder-0.11.2.tgz#c530d197790652dd075c3652ed10051a60c18768"
+  integrity sha512-xgk2lcQeJMgLUluILY+3OwLwQrxj32M/7Zb7EgJaLy5/26l/kXilmJRdUxmmYG+oD0rLomSHFxZJcfPWXSEHEA==
   dependencies:
     "@here/harp-datasource-protocol" "^0.11.1"
     "@here/harp-fetch" "^0.11.0"
     "@here/harp-geoutils" "^0.11.0"
     "@here/harp-lrucache" "^0.11.1"
-    "@here/harp-mapview" "^0.11.1"
+    "@here/harp-mapview" "^0.11.2"
     "@here/harp-utils" "^0.11.1"
     geojson-vt "^3.2.1"
 
-"@here/harp-mapview@^0.11.1":
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/@here/harp-mapview/-/harp-mapview-0.11.1.tgz#fed38d3e1f78fe571ff593a58006aacba765c74a"
-  integrity sha512-7lhCu4W1qdhYPI2RK8f2RpMKe9Yz/BBTvbesIBYzNHOi/EB1ZwI2J1ZjpyHde0CmKLPMiMnJxVbfRB9v4mTZHg==
+"@here/harp-mapview@^0.11.1", "@here/harp-mapview@^0.11.2":
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/@here/harp-mapview/-/harp-mapview-0.11.2.tgz#a216056b961be0e7f014f460ee890e84dbb1f256"
+  integrity sha512-vb4JYZhPF4S6yfaENZKoCbidTzfMCFlTVnMjkOSkKvqFy24BCYCx+z4VSEE/HVOMU5jFGzKawI+UIoCiZ0Li5A==
   dependencies:
     "@here/harp-datasource-protocol" "^0.11.1"
     "@here/harp-fetch" "^0.11.0"

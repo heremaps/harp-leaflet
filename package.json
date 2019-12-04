@@ -35,7 +35,7 @@
   "devDependencies": {
     "@here/harp-geoutils": "^0.11.0",
     "@here/harp-map-theme": "^0.11.1",
-    "@here/harp-mapview": "^0.11.1",
+    "@here/harp-mapview": "^0.11.2",
     "@here/harp-omv-datasource": "^0.11.1",
     "@here/harp-test-utils": "^0.11.0",
     "@here/harp.gl": "^0.11.1",
@@ -78,7 +78,7 @@
   },
   "peerDependencies": {
     "@here/harp-geoutils": "^0.11.0",
-    "@here/harp-mapview": "^0.11.1",
+    "@here/harp-mapview": "^0.11.2",
     "leaflet": "^1.5.1"
   }
 }
