@@ -23,16 +23,17 @@ LE.marker([38.912753, -77.032194])
     .openPopup();
 
 const harpGL = new LE.HarpGL({
-    theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json"
-}).addTo(map);
-
-const dataSource = new harp.OmvDataSource({
-    baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",
-    apiFormat: harp.APIFormat.XYZMVT,
-    styleSetName: config.styleSetName,
-    maxZoomLevel: 17,
-    authenticationCode: config.accessToken,
-    concurrentDecoderScriptUrl: config.decoderPath
+    theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json",
+    dataSources: [
+        new harp.OmvDataSource({
+            baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",
+            apiFormat: harp.APIFormat.XYZMVT,
+            styleSetName: config.styleSetName,
+            maxZoomLevel: 17,
+            authenticationCode: config.accessToken,
+            concurrentDecoderScriptUrl: config.decoderPath
+        })
+    ]
 });
 
-harpGL.mapView.addDataSource(dataSource);
+harpGL.addTo(map);

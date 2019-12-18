@@ -4,12 +4,23 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { GeoCoordinates, GeoCoordinatesLike } from "@here/harp-geoutils";
-import { MapView, MapViewEventNames, MapViewOptions, MapViewUtils } from "@here/harp-mapview";
+import {
+    DataSource,
+    MapView,
+    MapViewEventNames,
+    MapViewOptions,
+    MapViewUtils
+} from "@here/harp-mapview";
 import bezier from "bezier-easing";
 import { DomUtil, LatLng, Layer, LayerOptions, Map } from "leaflet";
 import "./draggable-patch";
 
-type HarpLeafletOptions = Omit<LayerOptions & MapViewOptions, "canvas">;
+type HarpLeafletOptions = Omit<LayerOptions & MapViewOptions, "canvas"> & {
+    /**
+     * Add these datasources to underlying `MapView`.
+     */
+    dataSources?: DataSource[];
+};
 
 const GEO_COORD = new GeoCoordinates(0, 0);
 
@@ -137,6 +148,11 @@ export default class HarpGL extends Layer {
             super.onRemove(map);
         }
         map.off("resize", this.onResize);
+        if (this.m_options.dataSources !== undefined) {
+            for (const ds of this.m_options.dataSources) {
+                this.m_mapView.removeDataSource(ds);
+            }
+        }
         if (this.m_mapView !== undefined) {
             this.m_mapView.removeEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
             this.m_mapView.dispose();
@@ -188,6 +204,12 @@ export default class HarpGL extends Layer {
             canvas,
             ...this.m_options
         });
+
+        if (this.m_options.dataSources !== undefined) {
+            for (const ds of this.m_options.dataSources) {
+                this.m_mapView.addDataSource(ds);
+            }
+        }
 
         this.m_mapView.addEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
     }

@@ -27,11 +27,6 @@ L.marker([38.912753, -77.032194])
     .addTo(map)
     .openPopup();
 
-const harpGL = new HarpGL({
-    decoderUrl: "./build/decoder.bundle.js",
-    theme: "resources/harp-map-theme/berlin_tilezen_base.json"
-}).addTo(map);
-
 const hereBaseDataSource = new OmvDataSource({
     baseUrl: "https://xyz.api.here.com/tiles/herebase.02",
     apiFormat: APIFormat.XYZOMV,
@@ -50,8 +45,11 @@ const osmBaseDataSource = new OmvDataSource({
     concurrentDecoderScriptUrl: config.decoderPath
 });
 
-harpGL.mapView.addDataSource(hereBaseDataSource);
-harpGL.mapView.addDataSource(osmBaseDataSource);
+const harpGL = new HarpGL({
+    decoderUrl: "./build/decoder.bundle.js",
+    theme: "resources/harp-map-theme/berlin_tilezen_base.json",
+    dataSources: [hereBaseDataSource, osmBaseDataSource]
+}).addTo(map);
 
 hereBaseDataSource.enabled = true;
 osmBaseDataSource.enabled = false;
