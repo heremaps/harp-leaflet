@@ -21,6 +21,7 @@
     "build-tests": "webpack --config webpack.tests.config.js",
     "start-tests": "webpack-dev-server  --config webpack.tests.config.js",
     "test": "karma start karma.conf.js",
+    "deploy": "yarn build-examples && gh-pages -d examples/",
     "prettier": "prettier -l './**/*.ts' './**/*.js' './**/*.html'",
     "prettier:fix": "prettier --write './**/*.ts' './**/*.js' './**/*.html'"
   },
@@ -45,6 +46,7 @@
     "@types/sinon": "^7.5.1",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^5.0.4",
+    "gh-pages": "^2.1.1",
     "glob": "^7.1.4",
     "karma": "^4.4.1",
     "karma-chai": "^0.1.0",
