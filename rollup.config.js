@@ -14,21 +14,21 @@ export default {
                     "MapView",
                     "MapViewEventNames",
                     "MapViewOptions",
-                    "MapViewUtils"
+                    "MapViewUtils",
                 ],
                 "@here/harp-omv-datasource": ["APIFormat", "OmvDataSource"],
-                leaflet: ["DomUtil", "LatLng", "Layer", "LayerOptions"]
-            }
+                leaflet: ["DomUtil", "LatLng", "Layer", "LayerOptions"],
+            },
         }),
         autoNamedExports(),
         typescript({
             tsconfig: "tsconfig.json",
             tsconfigOverride: {
                 compilerOptions: {
-                    module: "esnext"
-                }
-            }
-        })
+                    module: "esnext",
+                },
+            },
+        }),
     ],
     external: ["leaflet", "@here/harp-geoutils", "@here/harp-mapview", "@here/harp-omv-datasource"],
     output: {
@@ -36,10 +36,10 @@ export default {
             leaflet: "L",
             "@here/harp-geoutils": "harp",
             "@here/harp-mapview": "harp",
-            "@here/harp-omv-datasource": "harp"
+            "@here/harp-omv-datasource": "harp",
         },
         file: "./build/harp-leaflet.js",
         name: "L.HarpGL",
-        format: "umd"
-    }
+        format: "umd",
+    },
 };

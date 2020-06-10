@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2019 HERE Europe B.V.
+ * Copyright (C) 2017-2020 HERE Europe B.V.
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -23,7 +23,7 @@ LE.marker([38.912753, -77.032194])
     .openPopup();
 
 const harpGL = new LE.HarpGL({
-    theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json"
+    theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json",
 }).addTo(map);
 
 const dataSource = new harp.OmvDataSource({
@@ -32,7 +32,7 @@ const dataSource = new harp.OmvDataSource({
     styleSetName: config.styleSetName,
     maxZoomLevel: 17,
     authenticationCode: config.accessToken,
-    concurrentDecoderScriptUrl: config.decoderPath
+    concurrentDecoderScriptUrl: config.decoderPath,
 });
 
 harpGL.mapView.addDataSource(dataSource);

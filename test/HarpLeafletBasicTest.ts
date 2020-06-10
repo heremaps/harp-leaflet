@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2019 HERE Europe B.V.
+ * Copyright (C) 2017-2020 HERE Europe B.V.
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -16,14 +16,14 @@ import HarpGL from "../src/index";
 
 const GEO_EPSILON = 0.00000001;
 
-describe("harp-leaflet", function() {
+describe("harp-leaflet", function () {
     let sandbox: sinon.SinonSandbox;
     let leafletMap: L.Map;
     let domElement: HTMLDivElement;
     let harpGLLayer: HarpGL;
 
-    before(function() {
-        sandbox = sinon.sandbox.create();
+    before(function () {
+        sandbox = sinon.createSandbox({});
 
         domElement = document.createElement("div");
         domElement.style.position = "absolute";
@@ -34,7 +34,7 @@ describe("harp-leaflet", function() {
         leafletMap = L.map(domElement).setView([38.912753, -77.032194], 15);
     });
 
-    after(function() {
+    after(function () {
         if (harpGLLayer !== undefined) {
             harpGLLayer.remove();
         }
@@ -47,14 +47,14 @@ describe("harp-leaflet", function() {
         sandbox.restore();
     });
 
-    it("addTo(map)", async function() {
+    it("addTo(map)", async function () {
         const onAddStub = sandbox.spy(HarpGL.prototype, "onAdd");
         harpGLLayer = new HarpGL({ theme: {} }).addTo(leafletMap);
 
         assert.equal(onAddStub.callCount, 1, "onAdd should be called");
     });
 
-    it("position is set correctly", async function() {
+    it("position is set correctly", async function () {
         // `mapView.zoomLevel` is updated only when actual rendering occurs, so we force frame
         // update to ensure that zoom level is applied.
         harpGLLayer.mapView.update();
@@ -71,7 +71,7 @@ describe("harp-leaflet", function() {
         assert.equal(harpZoom, lZoom);
     });
 
-    it("L.map.setView updates MapView camera correctly", async function() {
+    it("L.map.setView updates MapView camera correctly", async function () {
         leafletMap.setView([40.707, -74.01], 12);
 
         // `mapView.zoomLevel` is updated only when actual rendering occurs.
@@ -85,7 +85,7 @@ describe("harp-leaflet", function() {
         assert.equal(harpZoom, 12);
     });
 
-    it("L.map.fitBounds updates MapView camera correctly", async function() {
+    it("L.map.fitBounds updates MapView camera correctly", async function () {
         leafletMap.fitBounds(L.latLngBounds([51.412912, -5.998535], [43.052834, 8.4375]));
 
         // `mapView.zoomLevel` is updated only when actual rendering occurs.
@@ -99,7 +99,7 @@ describe("harp-leaflet", function() {
         assert.equal(harpZoom, 4);
     });
 
-    it("remove works", async function() {
+    it("remove works", async function () {
         const onRemoveStub = sandbox.spy(HarpGL.prototype, "onRemove");
 
         harpGLLayer.remove();

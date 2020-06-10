@@ -1,9 +1,8 @@
 /*
- * Copyright (C) 2017-2019 HERE Europe B.V.
+ * Copyright (C) 2017-2020 HERE Europe B.V.
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
-import { GeoCoordinates } from "@here/harp-geoutils";
 import { APIFormat, OmvDataSource } from "@here/harp-omv-datasource";
 import HarpGL from "harp-leaflet";
 import * as L from "leaflet";
@@ -37,7 +36,7 @@ function style(feature: any) {
         color: "white",
         dashArray: "3",
         fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.density)
+        fillColor: getColor(feature.properties.density),
     };
 }
 
@@ -45,13 +44,13 @@ function style(feature: any) {
 // @ts-ignore
 const info = L.control();
 
-info.onAdd = function() {
+info.onAdd = function () {
     this._div = L.DomUtil.create("div", "info");
     this.update();
     return this._div;
 };
 
-info.update = function(props: any) {
+info.update = function (props: any) {
     this._div.innerHTML =
         "<h4>US Population Density</h4>" +
         (props
@@ -68,7 +67,7 @@ function highlightFeature(e: L.LeafletEvent) {
         weight: 5,
         color: "#666",
         dashArray: "",
-        fillOpacity: 0.7
+        fillOpacity: 0.7,
     });
 
     // @ts-ignore
@@ -81,7 +80,7 @@ function highlightFeature(e: L.LeafletEvent) {
 
 const geojson = L.geoJSON(statesData as any, {
     style,
-    onEachFeature
+    onEachFeature,
 }).addTo(map);
 
 function resetHighlight(e: L.LeafletEvent) {
@@ -97,7 +96,7 @@ function onEachFeature(feature: any, layer: L.Layer) {
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        click: zoomToFeature
+        click: zoomToFeature,
     });
 }
 
@@ -137,7 +136,7 @@ legend.addTo(map);
 
 const harpGL = new HarpGL({
     decoderUrl: "./build/decoder.bundle.js",
-    theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json"
+    theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json",
 }).addTo(map);
 
 const dataSource = new OmvDataSource({
@@ -146,8 +145,7 @@ const dataSource = new OmvDataSource({
     styleSetName: config.styleSetName,
     maxZoomLevel: 17,
     authenticationCode: config.accessToken,
-    concurrentDecoderScriptUrl: config.decoderPath
+    concurrentDecoderScriptUrl: config.decoderPath,
 });
 
 harpGL.mapView.addDataSource(dataSource);
-

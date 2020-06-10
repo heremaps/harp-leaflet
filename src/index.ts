@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 HERE Europe B.V.
+ * Copyright (C) 2019-2020 HERE Europe B.V.
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -55,7 +55,7 @@ function createSmoothZoom(delay: number): ISmoothZoom {
             lastZoom = zoom;
             lastCenter = center;
             startZoomTimestamp = timestamp;
-        }
+        },
     };
 }
 
@@ -105,14 +105,11 @@ export default class HarpGL extends Layer {
             },
             zoomanim: (e: L.LeafletEvent) => {
                 this.setNewZoomTarget(e as L.ZoomAnimEvent);
-            }
+            },
         };
     }
 
     onAdd(map: Map) {
-        if (super.onAdd) {
-            super.onAdd(map);
-        }
         if (!this.m_glContainer) {
             this.initContainer();
         }
@@ -133,9 +130,6 @@ export default class HarpGL extends Layer {
     }
 
     onRemove(map: Map): this {
-        if (super.onRemove) {
-            super.onRemove(map);
-        }
         map.off("resize", this.onResize);
         if (this.m_mapView !== undefined) {
             this.m_mapView.removeEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
@@ -179,14 +173,14 @@ export default class HarpGL extends Layer {
         // this styles are needed to sync movement and zoom deltas with leaflet.
         Object.assign(canvas.style, {
             width: "100%",
-            height: "100%"
+            height: "100%",
         });
 
         this.m_glContainer.appendChild(canvas);
 
         this.m_mapView = new MapView({
             canvas,
-            ...this.m_options
+            ...this.m_options,
         });
 
         this.m_mapView.addEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
