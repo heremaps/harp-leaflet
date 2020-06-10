@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
         frameworks: ["mocha", "chai"],
         browsers: ["ChromeHeadless"],
@@ -8,6 +8,6 @@ module.exports = function(config) {
         files: ["test/dist/tests.bundle.js"],
         port: 9999,
         singleRun: true,
-        concurrency: Infinity
+        concurrency: Infinity,
     });
 };

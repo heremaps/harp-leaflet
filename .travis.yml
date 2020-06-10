@@ -23,6 +23,8 @@ jobs:
     - name: "Build & Deploy"
       script: |
         set -ex
+        yarn
+        yarn prettier
         yarn run build
         yarn run build-examples
         yarn run build-tests
