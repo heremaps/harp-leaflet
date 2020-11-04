@@ -33,12 +33,12 @@
     "yarn": ">=1.11.1"
   },
   "devDependencies": {
-    "@here/harp-geoutils": "^0.16.0",
-    "@here/harp-map-theme": "^0.16.0",
-    "@here/harp-mapview": "^0.16.0",
-    "@here/harp-omv-datasource": "^0.16.0",
-    "@here/harp-test-utils": "^0.16.0",
-    "@here/harp.gl": "^0.16.0",
+    "@here/harp-geoutils": "^0.21.0",
+    "@here/harp-map-theme": "^0.21.1",
+    "@here/harp-mapview": "^0.21.1",
+    "@here/harp-omv-datasource": "^0.21.1",
+    "@here/harp-test-utils": "^0.21.0",
+    "@here/harp.gl": "^0.21.1",
     "@types/chai": "^4.2.5",
     "@types/leaflet": "^1.5.1",
     "@types/mocha": "^7.0.2",
@@ -60,7 +60,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "sinon": "^9.0.2",
-    "three": "0.117.1",
+    "three": "0.122.0",
     "ts-loader": "^7.0.5",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
@@ -75,8 +75,8 @@
     "semver": "7.3.2"
   },
   "peerDependencies": {
-    "@here/harp-geoutils": "^0.16.0",
-    "@here/harp-mapview": "^0.16.0",
-    "leaflet": "^1.6.0"
+    "@here/harp-geoutils": "^0.21.0",
+    "@here/harp-mapview": "^0.21.1",
+    "leaflet": "^1.7.1"
   }
 }
