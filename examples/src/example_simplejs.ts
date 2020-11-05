@@ -3,32 +3,27 @@
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
+import { APIFormat, OmvDataSource } from "@here/harp-omv-datasource";
+import { HarpGL } from "harp-leaflet";
+import L from "leaflet";
 import * as config from "./config";
 
-interface ILeafletExtended {
-    HarpGL: any;
-}
-
-// @ts-ignore
-const LE: typeof L & ILeafletExtended = L as any;
-declare let harp: typeof import("@here/harp-omv-datasource") & typeof import("@here/harp-geoutils");
-
-const map = LE.map("map", {
+const map = L.map("map", {
     // wheelDebounceTime: 10
 }).setView([38.912753, -77.032194], 15);
 
-LE.marker([38.912753, -77.032194])
+L.marker([38.912753, -77.032194])
     .bindPopup("Hello <b>Harp GL</b>!<br>Whoa, it works!")
     .addTo(map)
     .openPopup();
 
-const harpGL = new LE.HarpGL({
+const harpGL = new HarpGL({
     theme: "resources/harp-map-theme/berlin_tilezen_night_reduced.json",
 }).addTo(map);
 
-const dataSource = new harp.OmvDataSource({
+const dataSource = new OmvDataSource({
     baseUrl: "https://xyz.api.here.com/tiles/osmbase/512/all",
-    apiFormat: harp.APIFormat.XYZMVT,
+    apiFormat: APIFormat.XYZMVT,
     styleSetName: config.styleSetName,
     maxZoomLevel: 17,
     authenticationCode: config.accessToken,

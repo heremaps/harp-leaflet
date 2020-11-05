@@ -37,7 +37,7 @@ export default {
             "@here/harp-omv-datasource": "harp",
         },
         file: "./build/harp-leaflet.js",
-        name: "L.HarpGL",
+        name: "HarpGL",
         format: "umd",
     },
 };

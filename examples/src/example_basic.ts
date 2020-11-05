@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ThemeLoader } from "@here/harp-mapview";
 import { APIFormat, AuthenticationMethod, OmvDataSource } from "@here/harp-omv-datasource";
 import { HarpGL } from "harp-leaflet";
 import * as L from "leaflet";
@@ -67,7 +66,7 @@ installButtonGroupHandler(
     {
         default: "theme-berlin-base",
         onChange: async (themeUri) => {
-            harpGL.mapView.theme = await ThemeLoader.load(themeUri);
+            harpGL.mapView.setTheme(themeUri);
         },
     }
 );
