@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { APIFormat, OmvDataSource } from "@here/harp-omv-datasource";
-import HarpGL from "harp-leaflet";
+import { HarpGL } from "harp-leaflet";
 import * as L from "leaflet";
 import statesData from "../resources/us-states.json";
 import * as config from "./config";

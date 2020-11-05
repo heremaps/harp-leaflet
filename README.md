@@ -33,7 +33,7 @@ Add:
 ```js
 import { GeoCoordinates } from "@here/harp-geoutils";
 import { APIFormat, OmvDataSource } from "@here/harp-omv-datasource";
-import HarpGL from "harp-leaflet";
+import { HarpGL } from "harp-leaflet";
 import * as L from "leaflet";
 
 // 1. Initialize leaflet map
