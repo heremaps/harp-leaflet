@@ -12,7 +12,7 @@ import { waitForEvent } from "@here/harp-test-utils";
 import { assert } from "chai";
 import * as L from "leaflet";
 import * as sinon from "sinon";
-import HarpGL from "../src/index";
+import { HarpGL } from "../src/index";
 
 const GEO_EPSILON = 0.00000001;
 

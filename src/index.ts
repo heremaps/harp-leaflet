@@ -59,7 +59,7 @@ function createSmoothZoom(delay: number): ISmoothZoom {
     };
 }
 
-export default class HarpGL extends Layer {
+export class HarpGL extends Layer {
     private m_glContainer!: HTMLElement;
     private m_mapView!: MapView;
     private m_smoothZoom!: ISmoothZoom;

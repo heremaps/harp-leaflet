@@ -6,7 +6,7 @@
 
 import { ThemeLoader } from "@here/harp-mapview";
 import { APIFormat, AuthenticationMethod, OmvDataSource } from "@here/harp-omv-datasource";
-import HarpGL from "harp-leaflet";
+import { HarpGL } from "harp-leaflet";
 import * as L from "leaflet";
 import * as config from "./config";
 
