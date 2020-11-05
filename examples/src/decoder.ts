@@ -8,7 +8,7 @@ declare let self: Worker & {
     importScripts(..._scripts: string[]): void;
 };
 
-self.importScripts("https://unpkg.com/three@0.120.1/build/three.min.js");
+self.importScripts("../vendor/three.min.js");
 
 import { OmvTileDecoderService, OmvTilerService } from "@here/harp-omv-datasource/index-worker";
 

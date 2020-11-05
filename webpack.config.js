@@ -13,6 +13,7 @@ const entries = glob.sync("./examples/src/*.ts").reduce(
 );
 
 const harpMapThemePath = path.dirname(require.resolve("@here/harp-map-theme/package.json"));
+const leafletDist = path.dirname(require.resolve("leaflet/dist/leaflet.js"));
 
 module.exports = {
     context: dir,
@@ -53,9 +54,17 @@ module.exports = {
                 to: "vendor/",
             },
             {
+                from: require.resolve("three/build/three.min.js"),
+                to: "vendor/",
+            },
+            {
                 from: path.join(harpMapThemePath, "resources/"),
                 to: "resources/harp-map-theme",
                 toType: "dir",
+            },
+            {
+                from: leafletDist,
+                to: "vendor/",
             },
         ]),
     ],
