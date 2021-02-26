@@ -1,6 +1,6 @@
 {
   "name": "@here/harp-leaflet",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Leaflet plugin for harp.gl maps",
   "author": {
     "name": "HERE Europe B.V.",
@@ -33,12 +33,12 @@
     "yarn": ">=1.11.1"
   },
   "devDependencies": {
-    "@here/harp-geoutils": "^0.21.0",
-    "@here/harp-map-theme": "^0.21.1",
-    "@here/harp-mapview": "^0.21.1",
-    "@here/harp-omv-datasource": "^0.21.1",
-    "@here/harp-test-utils": "^0.21.0",
-    "@here/harp.gl": "^0.21.1",
+    "@here/harp-geoutils": "^0.22.0",
+    "@here/harp-map-theme": "^0.22.0",
+    "@here/harp-mapview": "^0.22.0",
+    "@here/harp-omv-datasource": "^0.22.0",
+    "@here/harp-test-utils": "^0.22.0",
+    "@here/harp.gl": "^0.22.0",
     "@types/chai": "^4.2.5",
     "@types/leaflet": "^1.5.1",
     "@types/mocha": "^7.0.2",
@@ -59,7 +59,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "sinon": "^9.0.2",
-    "three": "^0.120.1",
+    "three": "^0.124.0",
     "ts-loader": "^7.0.5",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
@@ -68,14 +68,9 @@
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.9.0"
   },
-  "dependencies": {
-    "bezier-easing": "^2.1.0",
-    "bl": "4.0.2",
-    "semver": "7.3.2"
-  },
   "peerDependencies": {
-    "@here/harp-geoutils": "^0.21.0",
-    "@here/harp-mapview": "^0.21.1",
+    "@here/harp-geoutils": "^0.22.0",
+    "@here/harp-mapview": "^0.22.0",
     "leaflet": "^1.7.1"
   }
 }
