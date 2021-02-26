@@ -5,65 +5,16 @@
  */
 import { GeoCoordinates, GeoCoordinatesLike } from "@here/harp-geoutils";
 import { MapView, MapViewEventNames, MapViewOptions, MapViewUtils } from "@here/harp-mapview";
-import bezier from "bezier-easing";
-import { DomUtil, LatLng, Layer, LayerOptions, Map } from "leaflet";
+import { DomUtil, LatLng, Layer, LayerOptions, LeafletEvent, Map, Point } from "leaflet";
 import "./draggable-patch";
 
 type HarpLeafletOptions = Omit<LayerOptions & MapViewOptions, "canvas">;
 
 const GEO_COORD = new GeoCoordinates(0, 0);
 
-const easing = bezier(0, 0, 0.5, 1);
-
-// Smooth zoom block
-interface ISmoothZoom {
-    compute: (zoom: number, center: LatLng) => { zoom: number; center: LatLng };
-    setZoomAndTimestamp: (zoom: number, center: LatLng, timestamp: number) => void;
-}
-
-function lerp(v0: number, v1: number, t: number): number {
-    return v0 * (1 - t) + v1 * t;
-}
-
-function createSmoothZoom(delay: number): ISmoothZoom {
-    let lastZoom: number | null = null;
-    let lastCenter: LatLng | null = null;
-    let startZoomTimestamp: number | null = null;
-
-    return {
-        compute: (zoom: number, center: LatLng) => {
-            if (lastZoom === null) {
-                lastZoom = zoom;
-            } else if (lastZoom !== zoom && lastCenter !== null) {
-                if (startZoomTimestamp === null) {
-                    startZoomTimestamp = performance.now();
-                }
-
-                const diff = performance.now() - startZoomTimestamp!;
-                const progress = 1 - easing(Math.max(Math.min(diff / delay, 1), 0));
-
-                const currentZoom = lerp(lastZoom, zoom, progress);
-                const lat = lerp(lastCenter.lat, center.lat, progress);
-                const lng = lerp(lastCenter.lng, center.lng, progress);
-
-                return { zoom: currentZoom, center: ({ lat, lng } as any) as LatLng };
-            }
-
-            return { zoom, center };
-        },
-        setZoomAndTimestamp: (zoom: number, center: LatLng, timestamp: number) => {
-            lastZoom = zoom;
-            lastCenter = center;
-            startZoomTimestamp = timestamp;
-        },
-    };
-}
-
 export class HarpGL extends Layer {
     private m_glContainer!: HTMLElement;
     private m_mapView!: MapView;
-    private m_smoothZoom!: ISmoothZoom;
-    private m_isZooming: boolean = false;
 
     constructor(private m_options: HarpLeafletOptions) {
         super((m_options as any) as LayerOptions);
@@ -71,40 +22,16 @@ export class HarpGL extends Layer {
 
     initialize() {
         this.update();
-
-        this.m_smoothZoom = createSmoothZoom(200); // 1/4 sec
+        this.resetTransform = this.resetTransform.bind(this);
     }
 
     getEvents() {
         return {
-            movestart: () => {
-                this.update();
-            },
-            moveend: () => {
-                this.update();
-            },
-            move: () => {
-                this.update();
-            },
-            zoomstart: () => {
-                this.m_mapView.addEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
-                this.m_isZooming = true;
-                this.m_mapView.beginAnimation();
-            },
-            zoomend: () => {
-                this.m_mapView.removeEventListener(
-                    MapViewEventNames.AfterRender,
-                    this.onAfterRender
-                );
-                this.m_mapView.endAnimation();
-                this.m_isZooming = false;
-                this.update();
-            },
-            zoom: () => {
-                this.update();
-            },
-            zoomanim: (e: L.LeafletEvent) => {
-                this.setNewZoomTarget(e as L.ZoomAnimEvent);
+            move: this.resetTransform,
+            zoom: this.resetTransform,
+            zoomanim: (event: L.LeafletEvent) => {
+                const evt = event as L.ZoomAnimEvent;
+                this.setTransform(evt.zoom, evt.center);
             },
         };
     }
@@ -114,7 +41,7 @@ export class HarpGL extends Layer {
             this.initContainer();
         }
 
-        this.getPane("mapPane")!.parentNode!.appendChild(this.m_glContainer);
+        this.getPane("mapPane")!.appendChild(this.m_glContainer);
 
         if (this.m_mapView === undefined) {
             this.initMapView();
@@ -123,16 +50,14 @@ export class HarpGL extends Layer {
         // ...
 
         this.onResize();
-        this._map.on("resize", this.onResize);
+        map.on("resize", this.onResize);
 
-        this.update();
         return this;
     }
 
     onRemove(map: Map): this {
         map.off("resize", this.onResize);
         if (this.m_mapView !== undefined) {
-            this.m_mapView.removeEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
             this.m_mapView.dispose();
             this.m_mapView = undefined!;
         }
@@ -150,22 +75,46 @@ export class HarpGL extends Layer {
         this.m_glContainer.style.width = size.x + "px";
         this.m_glContainer.style.height = size.y + "px";
         this.m_mapView.resize(size.x, size.y);
+
+        this.resetTransform();
     };
 
-    private onAfterRender = () => {
-        if (!this.m_isZooming) {
-            return;
-        }
-
+    private resetTransform() {
         this.update();
-    };
+        this.setTransform(this._map.getZoom(), this._map.getCenter());
+    }
+
+    private setTransform(toZoom: number, toCenter: LatLng) {
+        const map = this._map;
+        const fromZoom = map.getZoom();
+        const scale = map.getZoomScale(toZoom, fromZoom);
+        const mapPanePos = DomUtil.getPosition(this.getPane("mapPane")!);
+
+        const origin = map.getPixelOrigin().subtract(mapPanePos);
+
+        const newOrigin = map.project(toCenter, toZoom);
+        newOrigin.x -= this.m_glContainer.clientWidth / 2 || 0;
+        newOrigin.y -= this.m_glContainer.clientHeight / 2 || 0;
+        newOrigin.x = newOrigin.x + mapPanePos.x;
+        newOrigin.y = newOrigin.y + mapPanePos.y;
+
+        const translate = new Point(
+            Math.round(origin.x * scale - newOrigin.x),
+            Math.round(origin.y * scale - newOrigin.y)
+        );
+        DomUtil.setTransform(this.m_glContainer, translate, scale);
+    }
 
     private initContainer() {
-        const container = (this.m_glContainer = DomUtil.create("div", "leaflet-harpgl-layer"));
+        const container = this._map.createPane("harpgl");
 
+        container.style.zIndex = "190"; // put it under tilePane
         const size = this._map.getSize();
         container.style.width = size.x + "px";
         container.style.height = size.y + "px";
+        DomUtil.addClass(container, "leaflet-zoom-animated");
+
+        this.m_glContainer = container;
     }
 
     private initMapView() {
@@ -182,21 +131,14 @@ export class HarpGL extends Layer {
             canvas,
             ...this.m_options,
         });
-
-        this.m_mapView.addEventListener(MapViewEventNames.AfterRender, this.onAfterRender);
     }
 
     private update() {
         if (!this._map) {
             return;
         }
-        let zoom = this._map.getZoom();
-        let center = this._map.getCenter();
-        if (this._map.options.zoomAnimation !== false && this.m_isZooming) {
-            const r = this.m_smoothZoom.compute(zoom, center);
-            zoom = r.zoom;
-            center = r.center;
-        }
+        const zoom = this._map.getZoom();
+        const center = this._map.getCenter();
 
         const cameraDistance = MapViewUtils.calculateDistanceToGroundFromZoomLevel(
             this.m_mapView,
@@ -211,10 +153,6 @@ export class HarpGL extends Layer {
             // Triggers update of mapview.worldCenter
             this.m_mapView.geoCenter = GEO_COORD;
         }
-    }
-
-    private setNewZoomTarget(e: L.ZoomAnimEvent) {
-        this.m_smoothZoom.setZoomAndTimestamp(e.zoom, e.center, performance.now());
     }
 
     get mapView() {
