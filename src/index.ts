@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2019-2020 HERE Europe B.V.
+ * Copyright (C) 2019-2021 HERE Europe B.V.
  * Licensed under Apache 2.0, see full license in LICENSE
  * SPDX-License-Identifier: Apache-2.0
  */
 import { GeoCoordinates, GeoCoordinatesLike } from "@here/harp-geoutils";
-import { MapView, MapViewEventNames, MapViewOptions, MapViewUtils } from "@here/harp-mapview";
+import { MapView, MapViewOptions, MapViewUtils } from "@here/harp-mapview";
 import { DomUtil, LatLng, Layer, LayerOptions, LeafletEvent, Map, Point } from "leaflet";
 import "./draggable-patch";
 

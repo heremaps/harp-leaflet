@@ -82,6 +82,6 @@ By default `yarn test` uses [karma](https://github.com/karma-runner/karma) confi
 
 ## License
 
-Copyright (C) 2019-2020 HERE Europe B.V.
+Copyright (C) 2019-2021 HERE Europe B.V.
 
 See the [LICENSE](./LICENSE) file in the root of this project for license details.
