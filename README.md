@@ -1,6 +1,5 @@
 # @here/harp-leaflet [![Build Status](https://travis-ci.com/heremaps/harp-leaflet.svg?branch=master)](https://travis-ci.com/heremaps/harp-leaflet)
 
-__Note:__ this plugin is __DEPRECATED__ and it won't be maintained anymore.
 
 ## Overview
 
