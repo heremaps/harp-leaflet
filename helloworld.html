@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <link rel="stylesheet" href="./vendor/leaflet.css" />
+        <style>
+            html,
+            body {
+                position: relative;
+                margin: 0;
+                height: 100%;
+            }
+
+            /*
+               Borrowed from from @here/harp-map-controls/lib/MapControlsUI.ts.
+            */
+
+            .harp-gl_v-align {
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            /* The target element to align vertically with vertical-align. */
+            .harp-gl_v-aligned {
+                pointer-events: all;
+                vertical-align: middle;
+                display: inline-block;
+            }
+            .harp-gl_controls-button {
+                display: block;
+                background-color: #272d37;
+                width: 100%;
+                height: 40px;
+                font-weight: bold;
+                outline: none;
+                margin: 0;
+                border: none;
+                color: rgba(255, 255, 255, 0.8);
+                cursor: pointer;
+                border-radius: 4px;
+                box-shadow: 0px 0px 5px 0 hsl(220, 4%, 40%);
+                transition: all 0.1s;
+                padding: 3px 3px 3px 3px;
+                user-select: none;
+                position: relative;
+            }
+
+            .active {
+                background-color: #37afaa;
+            }
+
+            #harp-gl_controls_tilt-button-ui {
+                font-size: 16px;
+            }
+            .harp-gl_controls-button:active {
+                background-color: #37afaa;
+                color: #eee;
+            }
+            .harp-gl_controls-button:focus {
+                outline: none;
+            }
+            .harp-gl_controls_button-top {
+                margin-bottom: 0;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+            .harp-gl_controls_button-bottom {
+                margin-top: 1px;
+                border-top-right-radius: 0;
+                border-top-left-radius: 0;
+            }
+            .harp-gl_controls_zoom-level {
+                display: block;
+                background-color: #fff;
+                width: 40px;
+                height: 20px;
+                font-size: 12px;
+                font-weight: bold;
+                outline: none;
+                border: none;
+                color: #555;
+                opacity: 0.87;
+                box-shadow: 0px 0px 4px #aaa;
+                padding: 2px 0 0;
+                text-align: center;
+                user-select: text;
+            }
+            input.harp-gl_controls_zoom-level::-webkit-outer-spin-button,
+            input.harp-gl_controls_zoom-level::-webkit-inner-spin-button {
+                /* display: none; <- Crashes Chrome on hover */
+                -webkit-appearance: none;
+                margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+            }
+            input.harp-gl_controls_zoom-level[type="number"] {
+                -moz-appearance: textfield; /* Firefox */
+            }
+            #harp-gl_controls-button_compass {
+                margin: 5px 0 0 0;
+            }
+            #harp-gl_controls_compass {
+                pointer-events: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+            #harp-gl_controls_compass::after {
+                content: " ";
+                position: absolute;
+                left: 50%;
+                margin-left: -3px;
+                top: 50%;
+                margin-top: -18px;
+                border: solid 3px rgba(0, 0, 0, 0);
+                border-bottom: solid 15px #a34f2e;
+            }
+            #harp-gl_controls_compass::before {
+                content: " ";
+                position: absolute;
+                left: 50%;
+                margin-left: -3px;
+                top: 50%;
+                margin-top: 0px;
+                border: solid 3px rgba(0, 0, 0, 0);
+                border-top: solid 15px #eee;
+            }
+            #harp-gl_controls_switch_projection {
+                margin-top: 5px;
+            }
+            .harp-gl_controls_switch_svg {
+                width: 25px;
+                height: 25px;
+                stroke: #d4d5d7;
+                fill: #d4d5d7;
+            }
+
+            .harp-gl-controls_main {
+                z-index: 800;
+                position: absolute;
+                right: 5px;
+                top: 0;
+                height: 100%; /* Vertical alignment is done dynamically, in the rest of the CSS. */
+                pointer-events: none; /* Allows to click the map even though height is 100%. */
+            }
+            .harp-gl-header {
+                color: rgba(255, 255, 255, 0.8);
+                margin: 0px;
+                font-size: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map" style="height: 100%;">
+            <div class="harp-gl-controls_main">
+                <span class="harp-gl_v-align"></span>
+                <div class="harp-gl_v-aligned">
+                    <h2 class="harp-gl-header">Datasource</h2>
+                    <button class="harp-gl_controls-button" id="datasource-herebase">
+                        XYZ HERE BASE
+                    </button>
+                    <button class="harp-gl_controls-button" id="datasource-osmbase">
+                        XYZ OSM BASE
+                    </button>
+
+                    <h2 class="harp-gl-header">Theme</h2>
+                    <button class="harp-gl_controls-button" id="theme-berlin-base">
+                        Berlin Base
+                    </button>
+                    <button class="harp-gl_controls-button" id="theme-berlin-reduced-day">
+                        Berlin Reduced Day
+                    </button>
+                    <button class="harp-gl_controls-button" id="theme-berlin-reduced-night">
+                        Berlin Reduced Night
+                    </button>
+
+                    <h2 class="harp-gl-header">Location</h2>
+                    <button class="harp-gl_controls-button" id="location-washington">
+                        Washington DC
+                    </button>
+                    <button class="harp-gl_controls-button" id="location-dubai">
+                        Dubai
+                    </button>
+                    <button class="harp-gl_controls-button" id="location-france">
+                        France
+                    </button>
+                    <button class="harp-gl_controls-button" id="location-us">
+                        United States
+                    </button>
+                    <button class="harp-gl_controls-button" id="location-europe">
+                        Europe
+                    </button>
+                    <button class="harp-gl_controls-button" id="location-earth">
+                        Earth
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="./vendor/leaflet.js" charset="utf-8"></script>
+        <script src="./vendor/three.min.js" charset="utf-8"></script>
+        <script src="./build/example_basic.bundle.js" charset="utf-8"></script>
+    </body>
+</html>
